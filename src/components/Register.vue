@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <h1>Rejestracja</h1>
-        <form @submit.prevent="register">
+    <div class="container">
+        <h1 class="header">Rejestracja</h1>
+        <form @submit.prevent="register" class="form">
             <label>
                 Nazwa użytkownika:
                 <input type="text" v-model="user.username">
@@ -10,7 +10,7 @@
                 Hasło:
                 <input type="password" v-model="user.password">
             </label>
-            <button type="submit">Zarejestruj</button>
+            <button type="submit" class="submit-btn">Zarejestruj</button>
         </form>
     </div>
 </template>

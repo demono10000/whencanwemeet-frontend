@@ -1,9 +1,12 @@
 <template>
-    <form @submit.prevent="handleSubmit">
-        <input v-model="username" type="text" placeholder="Username" required />
-        <input v-model="password" type="password" placeholder="Password" required />
-        <button type="submit">Login</button>
-    </form>
+    <div class="container">
+        <h1 class="header">Logowanie</h1>
+        <form @submit.prevent="handleSubmit" class="form">
+            <input v-model="username" type="text" placeholder="Username" required />
+            <input v-model="password" type="password" placeholder="Password" required />
+            <button type="submit" class="submit-btn">Login</button>
+        </form>
+    </div>
 </template>
 
 <script>

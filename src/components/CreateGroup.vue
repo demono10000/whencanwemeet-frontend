@@ -1,12 +1,20 @@
 <template>
-    <div>
-        <h1>Utwórz grupę</h1>
-        <form @submit.prevent="submitForm">
-            <input v-model="groupName" placeholder="Nazwa grupy" required />
-            <button type="submit">Utwórz</button>
+    <div class="container">
+        <h1 class="header">Utwórz grupę</h1>
+        <form @submit.prevent="submitForm" class="form">
+            <input class="input-field" v-model="groupName" placeholder="Nazwa grupy" required />
+            <button type="submit" class="submit-btn">Utwórz</button>
         </form>
     </div>
 </template>
+
+<style scoped>
+.input-field {
+    width: 50%;
+    margin-bottom: 10px;
+}
+</style>
+
 
 <script>
 import axios from 'axios';
@@ -26,7 +34,7 @@ export default {
                 return;
             }
 
-            axios.post('http://localhost:8080/api/createGroup', {
+            axios.post('http://localhost:8080/api/group/create', {
                 groupName: this.groupName
             }, {
                 headers: {

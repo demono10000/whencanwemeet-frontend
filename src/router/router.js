@@ -3,6 +3,10 @@ import Register from "../components/Register.vue";
 import CreateGroup from "../components/CreateGroup.vue";
 import Login from "@/components/Login.vue";
 import Home from "@/components/Home.vue";
+import GroupList from "@/components/GroupList.vue";
+import GroupDetails from "@/components/GroupDetails.vue";
+import Invites from "@/components/Invites.vue";
+import Unavailabilities from "@/components/Unavailabilities.vue";
 
 const routes = [
     {
@@ -28,6 +32,39 @@ const routes = [
         name: 'Home',
         component: Home
     },
+    {
+        path: '/groups',
+        name: 'GroupList',
+        component: GroupList,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/group/:id',
+        name: 'GroupDetails',
+        component: GroupDetails,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/invites',
+        name: 'Invites',
+        component: Invites,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/unavailabilities',
+        name: 'Unavailabilities',
+        component: Unavailabilities,
+        meta: {
+            requiresAuth: true
+        }
+    },
+
 ];
 
 const router = createRouter({
