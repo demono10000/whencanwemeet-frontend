@@ -4,7 +4,7 @@
 
         <div class="group-info">
             <p><strong>ID Grupy:</strong> {{ group.id }}</p>
-            <p><strong>ID Właściciela:</strong> {{ group.ownerId }}</p>
+            <p><strong>Właściciel:</strong> {{ group.ownerName }}</p>
         </div>
 
         <div class="list-container">

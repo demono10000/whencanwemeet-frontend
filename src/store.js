@@ -8,6 +8,7 @@ export default createStore({
         username: '',
         groups: [],
         userId: '',
+        message: ''
     },
     mutations: {
         setLoggedIn(state, value) {
@@ -21,6 +22,9 @@ export default createStore({
         },
         setUserId(state, value) {
             state.userId = value;
+        },
+        SET_MESSAGE(state, message) {
+            state.message = message;
         }
     },
     getters: {
@@ -66,6 +70,19 @@ export default createStore({
             } catch (error) {
                 console.error('Błąd pobierania grup:', error);
             }
-        }
+        },
+        async register({ commit }, user) {
+            try {
+                const response = await axios.post('http://localhost:8080/api/register', user);
+                if (response.data.status) {
+                    router.push('/login');
+                } else {
+                    commit('SET_MESSAGE', response.data.message);
+                }
+            } catch (error) {
+                console.error(error);
+                commit('SET_MESSAGE', "Wystąpił błąd podczas rejestracji. Spróbuj ponownie.");
+            }
+        },
     }
 });
