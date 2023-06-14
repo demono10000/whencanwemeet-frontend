@@ -1,5 +1,25 @@
 <template>
     <div class="container">
+        <h1 class="header">Twoje niedostępności</h1>
+        <ul v-if="unavailabilities.length">
+            <li v-for="unavailability in unavailabilities" :key="unavailability.id">
+                Start: {{ unavailability.startDate }}<br>
+                Koniec: {{ unavailability.endDate }}<br>
+                <div v-if="unavailability.repeatDaysOfWeek.length > 0 && unavailability.repeatDaysOfWeek[0] !== ''">
+                    Dni tygodnia: {{ unavailability.repeatDaysOfWeek.join(', ') }}
+                </div>
+                <div v-if="unavailability.repeatDaysInterval !== null">
+                    Interwał powtarzania: {{ unavailability.repeatDaysInterval }} dni
+                </div>
+                <div v-if="unavailability.repeatDayOfMonth !== null">
+                    Dzień miesiąca: {{ unavailability.repeatDayOfMonth }}
+                </div>
+                <button @click="deleteUnavailability(unavailability.id)" class="delete-btn submit-btn">Usuń</button>
+            </li>
+        </ul>
+        <p v-else>Brak niedostępności.</p>
+    </div>
+    <div class="container">
         <h1 class="header">Dodaj niedostępność</h1>
         <form @submit="submitForm" class="form flex-form">
             <label for="start_date">Data początkowa:</label>
@@ -35,6 +55,10 @@
 .submit-btn {
     width: 50%;  /* zmniejsza szerokość przycisku do 70% */
 }
+.delete-btn {
+    width: 10%;  /* zmniejsza szerokość przycisku do 70% */
+    background-color: #cc0000;
+}
 </style>
 
 <script>
@@ -49,10 +73,33 @@ export default {
                 repeatDaysOfWeek: '',
                 repeatDaysInterval: null,
                 repeatDayOfMonth: null
-            }
+            },
+            unavailabilities: []
         };
     },
+    created() {
+        this.getList();
+    },
     methods: {
+        getList(){
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Nie jesteś zalogowany!');
+                return;
+            }
+
+            axios.post('http://localhost:8080/api/unavailable/get', {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            })
+                .then(response => {
+                    this.unavailabilities = response.data;
+                })
+                .catch(error => {
+                    console.error('Błąd podczas pobierania niedostępności:', error);
+                });
+        },
         submitForm(e) {
             e.preventDefault();
 
@@ -66,7 +113,7 @@ export default {
 
             const repeatDaysOfWeekArray = repeatDaysOfWeek.split(',');
 
-            axios.post('http://localhost:8080/api/unavailable', {
+            axios.post('http://localhost:8080/api/unavailable/add', {
                 start_date,
                 end_date,
                 repeatDaysOfWeek: repeatDaysOfWeekArray,
@@ -80,6 +127,7 @@ export default {
                 .then(() => {
                     alert('Dodano niedostępność.');
                     this.resetForm();
+                    this.getList();
                 })
                 .catch(error => {
                     console.error('Błąd podczas dodawania niedostępności:', error);
@@ -93,6 +141,26 @@ export default {
                 repeatDaysInterval: null,
                 repeatDayOfMonth: null
             };
+        },
+        deleteUnavailability(id) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Nie jesteś zalogowany!');
+                return;
+            }
+
+            axios.delete(`http://localhost:8080/api/unavailable/delete/${id}`, {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            })
+                .then(() => {
+                    this.unavailabilities = this.unavailabilities.filter(unavailability => unavailability.id !== id);
+                    alert('Usunięto niedostępność.');
+                })
+                .catch(error => {
+                    console.error('Błąd podczas usuwania niedostępności:', error);
+                });
         }
     }
 };
