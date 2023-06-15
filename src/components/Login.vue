@@ -1,16 +1,23 @@
 <template>
     <div class="container">
-        <h1 class="header">Logowanie</h1>
+        <h1 class="header">Login</h1>
         <form @submit.prevent="handleSubmit" class="form">
-            <input v-model="username" type="text" placeholder="Username" required />
-            <input v-model="password" type="password" placeholder="Password" required />
+            <label>
+                Username:
+                <input v-model="username" type="text" placeholder="Username" required />
+            </label>
+            <label>
+                Password:
+                <input v-model="password" type="password" placeholder="Password" required />
+            </label>
             <button type="submit" class="submit-btn">Login</button>
         </form>
+        <p v-if="message">{{ message }}</p>
     </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     data() {
@@ -19,12 +26,18 @@ export default {
             password: '',
         };
     },
+    computed: {
+        ...mapState(['message']),
+    },
     methods: {
-        ...mapActions(['login']),
+        ...mapActions(['login', 'clearMessage']),
         handleSubmit() {
             this.login({ username: this.username, password: this.password });
         }
     },
-    // ...
+    beforeRouteLeave(to, from, next) {
+        this.clearMessage();
+        next();
+    },
 };
 </script>

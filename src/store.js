@@ -23,7 +23,7 @@ export default createStore({
         setUserId(state, value) {
             state.userId = value;
         },
-        SET_MESSAGE(state, message) {
+        setMessage(state, message) {
             state.message = message;
         }
     },
@@ -51,7 +51,7 @@ export default createStore({
                 commit('setUserId', response.data.id);
                 router.push('/');
             } catch (error) {
-                console.error('Błąd logowania:', error);
+                commit('setMessage', error.response.data.message || "Login error");
             }
         },
         logout({ commit }) {
@@ -68,21 +68,25 @@ export default createStore({
                 const groups = response.data;
                 commit('setGroups', groups);
             } catch (error) {
-                console.error('Błąd pobierania grup:', error);
+                console.error('Group download error:', error);
             }
         },
         async register({ commit }, user) {
             try {
                 const response = await axios.post('http://localhost:8080/api/register', user);
                 if (response.data.status) {
+                    commit('setMessage', "");
                     router.push('/login');
                 } else {
-                    commit('SET_MESSAGE', response.data.message);
+                    commit('setMessage', response.data.message);
                 }
             } catch (error) {
                 console.error(error);
-                commit('SET_MESSAGE', "Wystąpił błąd podczas rejestracji. Spróbuj ponownie.");
+                commit('setMessage', "An error occurred during registration. Please try again.");
             }
+        },
+        clearMessage({ commit }) {
+            commit('setMessage', '');
         },
     }
 });

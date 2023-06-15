@@ -1,10 +1,11 @@
 <template>
     <div class="container">
-        <h1 class="header">Utwórz grupę</h1>
+        <h1 class="header">Create group</h1>
         <form @submit.prevent="submitForm" class="form">
-            <input class="input-field" v-model="groupName" placeholder="Nazwa grupy" required />
-            <button type="submit" class="submit-btn">Utwórz</button>
+            <input class="input-field" v-model="groupName" placeholder="Group name" required />
+            <button type="submit" class="submit-btn">Create</button>
         </form>
+        <p v-if="message">{{ message }}</p>
     </div>
 </template>
 
@@ -15,7 +16,6 @@
 }
 </style>
 
-
 <script>
 import axios from 'axios';
 
@@ -23,6 +23,7 @@ export default {
     data() {
         return {
             groupName: '',
+            message: ''
         };
     },
     methods: {
@@ -30,7 +31,7 @@ export default {
             const token = localStorage.getItem('token');
 
             if (!token) {
-                alert('Nie jesteś zalogowany!');
+                alert('You are not logged in!');
                 return;
             }
 
@@ -41,12 +42,16 @@ export default {
                     Authorization: 'Bearer ' + token
                 }
             })
-                .then(() => {
-                    alert('Grupa została utworzona.');
-                    this.groupName = '';
+                .then((response) => {
+                    if (response.data.status) {
+                        alert('The group was created.');
+                        this.groupName = '';
+                    }
+                    this.message = response.data.message;
+
                 })
                 .catch(error => {
-                    console.error('Błąd podczas tworzenia grupy:', error);
+                    this.message = 'An error occurred while creating the group. Try again.';
                 });
         },
     },

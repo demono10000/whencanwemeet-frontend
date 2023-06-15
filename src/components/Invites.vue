@@ -1,10 +1,10 @@
 <template>
     <div class="container">
-        <h1 class="header">Zaproszenia do grupy</h1>
+        <h1 class="header">Invitations to the group</h1>
 
         <div v-for="invitation in invitations" :key="invitation.id" class="group-info">
-            <h2>Grupa: {{ invitation.groupName }}</h2>
-            <p>Właściciel: {{ invitation.owner }}</p>
+            <h2>Group: {{ invitation.groupName }}</h2>
+            <p>Owner: {{ invitation.owner }}</p>
             <button @click="respondInvitation(invitation.id, true)" class="submit-btn">Akceptuj</button>
             <button @click="respondInvitation(invitation.id, false)" class="nav-button">Odrzuć</button>
         </div>
@@ -26,7 +26,7 @@ export default {
         const token = localStorage.getItem('token');
 
         if (!token) {
-            alert('Nie jesteś zalogowany!');
+            alert('You are not logged in!');
             return;
         }
 
@@ -40,7 +40,7 @@ export default {
                 this.invitations = response.data;
             })
             .catch((error) => {
-                console.error("Błąd podczas pobierania listy zaproszeń:", error);
+                console.error("Error while downloading invitation list:", error);
             });
     },
     methods: {
@@ -48,7 +48,7 @@ export default {
             const token = localStorage.getItem('token');
 
             if (!token) {
-                alert('Nie jesteś zalogowany!');
+                alert('You are not logged in!');
                 return;
             }
 
@@ -60,14 +60,17 @@ export default {
                     Authorization: 'Bearer ' + token
                 }
             })
-                .then(() => {
-                    // Po udanej odpowiedzi na zaproszenie, usuń je z listy
-                    this.invitations = this.invitations.filter(
-                        (invitation) => invitation.id !== id
-                    );
+                .then((response) => {
+                    if (response.data.status) {
+                        this.invitations = this.invitations.filter(
+                            (invitation) => invitation.id !== id
+                        );
+                    }
+                    alert(response.data.message);
+
                 })
                 .catch((error) => {
-                    console.error("Błąd podczas odpowiadania na zaproszenie:", error);
+                    console.error("Error when responding to an invitation:", error);
                 });
         },
     },

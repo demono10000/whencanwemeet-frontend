@@ -3,11 +3,11 @@
         <router-link to="/" class="nav-link">Home</router-link>
         <router-link v-if="!isLoggedIn" to="/login" class="nav-link">Login</router-link>
         <router-link v-if="!isLoggedIn" to="/register" class="nav-link">Register</router-link>
-        <router-link v-if="isLoggedIn" to="/create-group" class="nav-link">Utwórz grupę</router-link>
-        <router-link v-if="isLoggedIn" to="/groups" class="nav-link">Twoje grupy</router-link>
-        <router-link v-if="isLoggedIn" to="/invites" class="nav-link">Zaproszenia</router-link>
-        <router-link v-if="isLoggedIn" to="/unavailabilities" class="nav-link">Niedostępności</router-link>
-        <button v-if="isLoggedIn" @click="logout" class="nav-link nav-button">Wyloguj się</button>
+        <router-link v-if="isLoggedIn" to="/create-group" class="nav-link">Create group</router-link>
+        <router-link v-if="isLoggedIn" to="/groups" class="nav-link">Your groups</router-link>
+        <router-link v-if="isLoggedIn" to="/invites" class="nav-link">Invitations</router-link>
+        <router-link v-if="isLoggedIn" to="/unavailabilities" class="nav-link">Unavailabilities</router-link>
+        <button v-if="isLoggedIn" @click="logout" class="nav-link nav-button">Logout</button>
     </div>
     <router-view/>
 </template>

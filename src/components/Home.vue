@@ -1,8 +1,8 @@
 <template>
     <div class="container">
-        <h1 v-if="isLoggedIn" class="header">Witaj, {{ username }}!</h1>
-        <h1 v-else class="header">Witaj na naszej stronie!</h1>
-        <p>Witamy na stronie głównej. Odkryj nasze możliwości, dołącz do grupy lub stwórz swoją własną.</p>
+        <h1 v-if="isLoggedIn" class="header">Hello, {{ username }}!</h1>
+        <h1 v-else class="header">Welcome to our website!</h1>
+        <p>Welcome to the home page. Discover our capabilities, join a group or create your own.</p>
     </div>
 </template>
 
