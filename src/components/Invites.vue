@@ -5,8 +5,8 @@
         <div v-for="invitation in invitations" :key="invitation.id" class="group-info">
             <h2>Group: {{ invitation.groupName }}</h2>
             <p>Owner: {{ invitation.owner }}</p>
-            <button @click="respondInvitation(invitation.id, true)" class="submit-btn">Akceptuj</button>
-            <button @click="respondInvitation(invitation.id, false)" class="nav-button">Odrzuć</button>
+            <button @click="respondInvitation(invitation.id, true)" class="submit-btn">Accept</button>
+            <button @click="respondInvitation(invitation.id, false)" class="nav-button">Reject</button>
         </div>
     </div>
 </template>
